@@ -1,3 +1,4 @@
+const { ObjectId } = require("mongodb");
 const { collections } = require("../db/collections");
 const Category = require("../models/Category");
 const AppError = require("../utils/AppError");
@@ -49,5 +50,33 @@ exports.getCategories = catchAsync(async (req, res, next) => {
     code: responseCodes.OK,
     message: "All Categories",
     categories,
+  });
+});
+
+exports.getCategoryById = catchAsync(async (req, res, next) => {
+  let _id;
+
+  try {
+    _id = new ObjectId(req.params.id);
+  } catch (error) {
+    return next(
+      new AppError(responseCodes.INVALID_PARAM, "Category ID is invalid", 400)
+    );
+  }
+
+  // Get Category By ID from DB
+  const CategoryCollection = req.app
+    .get("db")
+    .collection(collections.CATEGORIES);
+
+  const category = await CategoryCollection.findOne({
+    _id,
+  });
+
+  res.status(200).json({
+    status: "success",
+    code: responseCodes.OK,
+    message: `Category: ${req.params.id}`,
+    category,
   });
 });

@@ -12,6 +12,7 @@ const responseCodes = {
   INVALID_CREDENTIALS: "invalid_credentials",
   AUTHENTICATED: "authenticated",
   LOGGED_OUT: "logged_out",
+  INVALID_PARAM: "invalid_param",
 };
 
 module.exports = responseCodes;

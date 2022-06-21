@@ -1,6 +1,10 @@
 const Router = require("express").Router;
 const { signup, login, logout } = require("../controllers/auth");
-const { createCategory, getCategories } = require("../controllers/categories");
+const {
+  createCategory,
+  getCategories,
+  getCategoryById,
+} = require("../controllers/categories");
 const { isLoggedIn, authenticate } = require("../middlewares/auth");
 const { NewCategorySchema } = require("../schemas/category.schema");
 const { SignupSchema, LoginSchema } = require("../schemas/user.schema");
@@ -38,6 +42,7 @@ mainRouter.post(
   createCategory
 );
 mainRouter.get("/api/categories", authenticate, getCategories);
+mainRouter.get("/api/categories/:id", authenticate, getCategoryById);
 // Categories Routes End
 module.exports = {
   mainRouter,
