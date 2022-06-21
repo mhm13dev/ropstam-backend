@@ -1,6 +1,11 @@
 const Router = require("express").Router;
 const { signup, login, logout } = require("../controllers/auth");
-const { createCar, getCars, getCarById } = require("../controllers/cars");
+const {
+  createCar,
+  getCars,
+  getCarById,
+  updateCar,
+} = require("../controllers/cars");
 const {
   createCategory,
   getCategories,
@@ -9,7 +14,7 @@ const {
   deleteCategory,
 } = require("../controllers/categories");
 const { isLoggedIn, authenticate } = require("../middlewares/auth");
-const { NewCarSchema } = require("../schemas/car.schema");
+const { NewCarSchema, UpdateCarSchema } = require("../schemas/car.schema");
 const { CategorySchema } = require("../schemas/category.schema");
 const { SignupSchema, LoginSchema } = require("../schemas/user.schema");
 const { joiValidate } = require("../utils/joi.validate");
@@ -66,6 +71,12 @@ mainRouter.post(
 );
 mainRouter.get("/api/cars", authenticate, getCars);
 mainRouter.get("/api/cars/:id", authenticate, getCarById);
+mainRouter.patch(
+  "/api/cars/:id",
+  authenticate,
+  joiValidate(UpdateCarSchema, "body"),
+  updateCar
+);
 // Cars Routes End
 module.exports = {
   mainRouter,

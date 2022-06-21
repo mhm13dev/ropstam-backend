@@ -114,3 +114,87 @@ exports.getCarById = catchAsync(async (req, res, next) => {
     car,
   });
 });
+
+exports.updateCar = catchAsync(async (req, res, next) => {
+  const joiError = req.joiError;
+  if (req.joiError) {
+    return next(
+      new AppError(
+        responseCodes.INVALID_REQ_BODY,
+        joiError.details[0].message,
+        400
+      )
+    );
+  }
+
+  const data = req.joiValue;
+
+  // Check if category is being updated and the updated category exists
+  if (data.category_id) {
+    let category_id;
+
+    try {
+      category_id = new ObjectId(data.category_id);
+    } catch (error) {
+      return next(
+        new AppError(responseCodes.INVALID_PARAM, "Category ID is invalid", 400)
+      );
+    }
+    const CategoryCollection = req.app
+      .get("db")
+      .collection(collections.CATEGORIES);
+
+    const category = await CategoryCollection.findOne({
+      _id: category_id,
+    });
+
+    if (!category) {
+      return next(
+        new AppError(
+          responseCodes.CATEGORY_NOT_FOUND,
+          "Category does not exist",
+          404
+        )
+      );
+    }
+  }
+
+  let _id;
+
+  try {
+    _id = new ObjectId(req.params.id);
+  } catch (error) {
+    return next(
+      new AppError(responseCodes.INVALID_PARAM, "Car ID is invalid", 400)
+    );
+  }
+
+  const CarCollection = req.app.get("db").collection(collections.CARS);
+
+  // Update Category name in DB
+  const { value: car } = await CarCollection.findOneAndUpdate(
+    {
+      _id,
+    },
+    {
+      $set: {
+        ...data,
+        updatedAt: new Date(),
+      },
+    },
+    { returnDocument: "after" }
+  );
+
+  if (!car) {
+    return next(
+      new AppError(responseCodes.CAR_NOT_FOUND, "Car does not exist", 404)
+    );
+  }
+
+  res.status(200).json({
+    status: "success",
+    code: responseCodes.OK,
+    message: "Car updated",
+    car,
+  });
+});
