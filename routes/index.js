@@ -1,5 +1,5 @@
 const Router = require("express").Router;
-const { signup, login, logout } = require("../controllers/auth");
+const { signup, login, logout, getMe } = require("../controllers/auth");
 const {
   createCar,
   getCars,
@@ -39,6 +39,9 @@ mainRouter.post(
   isLoggedIn,
   login
 );
+
+// Get Logged In User
+mainRouter.get("/api/me", authenticate, getMe);
 
 // Logout from User Account
 mainRouter.post("/api/logout", logout);

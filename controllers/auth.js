@@ -119,6 +119,20 @@ exports.login = catchAsync(async (req, res, next) => {
   return res.status(200).json(response);
 });
 
+exports.getMe = catchAsync(async (req, res, next) => {
+  const response = {
+    status: "success",
+    code: responseCodes.OK,
+    message: "Logged In User",
+    user: {
+      ...req.currentUser,
+      password: undefined,
+    },
+  };
+
+  return res.status(200).json(response);
+});
+
 exports.logout = (req, res) => {
   const response = {
     status: "success",
