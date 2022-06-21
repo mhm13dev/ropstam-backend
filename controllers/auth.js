@@ -2,6 +2,7 @@ const { catchAsync } = require("../utils/catch.async");
 const { collections } = require("../db/collections");
 const AppError = require("../utils/AppError");
 const User = require("../models/User");
+const { sendSignupMail } = require("../utils/email");
 
 exports.signup = catchAsync(async (req, res, next) => {
   //   If a user is logged in, Don't allow them to signup
@@ -32,10 +33,13 @@ exports.signup = catchAsync(async (req, res, next) => {
   const UserCollection = req.app.get("db").collection(collections.USERS);
   await UserCollection.insertOne(user);
 
+  // Send Email
+  sendSignupMail({ user, password });
+
   const response = {
     status: "success",
-    code: "authenticated",
-    message: "Signup successful",
+    code: "ok",
+    message: "An email has been sent to your inbox for confirmation",
     user: { ...user, password: undefined },
   };
 
