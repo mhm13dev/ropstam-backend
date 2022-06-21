@@ -13,6 +13,7 @@ const responseCodes = {
   AUTHENTICATED: "authenticated",
   LOGGED_OUT: "logged_out",
   INVALID_PARAM: "invalid_param",
+  CATEGORY_NOT_FOUND: "category_not_found",
 };
 
 module.exports = responseCodes;

@@ -73,6 +73,16 @@ exports.getCategoryById = catchAsync(async (req, res, next) => {
     _id,
   });
 
+  if (!category) {
+    return next(
+      new AppError(
+        responseCodes.CATEGORY_NOT_FOUND,
+        "Category does not exist",
+        404
+      )
+    );
+  }
+
   res.status(200).json({
     status: "success",
     code: responseCodes.OK,
@@ -122,6 +132,16 @@ exports.updateCategory = catchAsync(async (req, res, next) => {
     },
     { returnDocument: "after" }
   );
+
+  if (!category) {
+    return next(
+      new AppError(
+        responseCodes.CATEGORY_NOT_FOUND,
+        "Category does not exist",
+        404
+      )
+    );
+  }
 
   res.status(200).json({
     status: "success",
