@@ -53,6 +53,22 @@ exports.getCategories = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getCategoriesCount = catchAsync(async (req, res, next) => {
+  // Get Categories Count from DB
+  const CategoryCollection = req.app
+    .get("db")
+    .collection(collections.CATEGORIES);
+
+  const categoriesCount = await CategoryCollection.countDocuments();
+
+  res.status(200).json({
+    status: "success",
+    code: responseCodes.OK,
+    message: "Categories Count",
+    categoriesCount,
+  });
+});
+
 exports.getCategoryById = catchAsync(async (req, res, next) => {
   let _id;
 

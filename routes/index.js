@@ -14,6 +14,7 @@ const {
   getCategoryById,
   updateCategory,
   deleteCategory,
+  getCategoriesCount,
 } = require("../controllers/categories");
 const { isLoggedIn, authenticate } = require("../middlewares/auth");
 const { NewCarSchema, UpdateCarSchema } = require("../schemas/car.schema");
@@ -55,14 +56,25 @@ mainRouter.post(
   joiValidate(CategorySchema, "body"),
   createCategory
 );
+
+// Get All Categories
 mainRouter.get("/api/categories", authenticate, getCategories);
+
+// Get Category By ID
+mainRouter.get("/api/categories/count", authenticate, getCategoriesCount);
+
+// Get Category By ID
 mainRouter.get("/api/categories/:id", authenticate, getCategoryById);
+
+// Update Category
 mainRouter.patch(
   "/api/categories/:id",
   authenticate,
   joiValidate(CategorySchema, "body"),
   updateCategory
 );
+
+// Delete Category
 mainRouter.delete("/api/categories/:id", authenticate, deleteCategory);
 // Categories Routes End
 
@@ -74,17 +86,28 @@ mainRouter.post(
   joiValidate(NewCarSchema, "body"),
   createCar
 );
+
+// Get All Cars
 mainRouter.get("/api/cars", authenticate, getCars);
+
+// Get All Cars Count
 mainRouter.get("/api/cars/count", authenticate, getCarsCount);
+
+// Get Car By ID
 mainRouter.get("/api/cars/:id", authenticate, getCarById);
+
+// Update Car
 mainRouter.patch(
   "/api/cars/:id",
   authenticate,
   joiValidate(UpdateCarSchema, "body"),
   updateCar
 );
+
+// Delete Car
 mainRouter.delete("/api/cars/:id", authenticate, deleteCar);
 // Cars Routes End
+
 module.exports = {
   mainRouter,
 };
