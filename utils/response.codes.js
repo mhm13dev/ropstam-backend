@@ -14,6 +14,7 @@ const responseCodes = {
   LOGGED_OUT: "logged_out",
   INVALID_PARAM: "invalid_param",
   CATEGORY_NOT_FOUND: "category_not_found",
+  CAR_NOT_FOUND: "car_not_found",
 };
 
 module.exports = responseCodes;

@@ -82,3 +82,35 @@ exports.getCars = catchAsync(async (req, res, next) => {
     cars,
   });
 });
+
+exports.getCarById = catchAsync(async (req, res, next) => {
+  let _id;
+
+  try {
+    _id = new ObjectId(req.params.id);
+  } catch (error) {
+    return next(
+      new AppError(responseCodes.INVALID_PARAM, "Car ID is invalid", 400)
+    );
+  }
+
+  // Get Car By ID from DB
+  const CarCollection = req.app.get("db").collection(collections.CARS);
+
+  const car = await CarCollection.findOne({
+    _id,
+  });
+
+  if (!car) {
+    return next(
+      new AppError(responseCodes.CAR_NOT_FOUND, "Car does not exist", 404)
+    );
+  }
+
+  res.status(200).json({
+    status: "success",
+    code: responseCodes.OK,
+    message: `Car: ${req.params.id}`,
+    car,
+  });
+});
