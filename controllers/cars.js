@@ -83,6 +83,20 @@ exports.getCars = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getCarsCount = catchAsync(async (req, res, next) => {
+  // Get Cars Count from DB
+  const CarCollection = req.app.get("db").collection(collections.CARS);
+
+  const carsCount = await CarCollection.countDocuments();
+
+  res.status(200).json({
+    status: "success",
+    code: responseCodes.OK,
+    message: "Cars Count",
+    carsCount,
+  });
+});
+
 exports.getCarById = catchAsync(async (req, res, next) => {
   let _id;
 

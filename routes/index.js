@@ -6,6 +6,7 @@ const {
   getCarById,
   updateCar,
   deleteCar,
+  getCarsCount,
 } = require("../controllers/cars");
 const {
   createCategory,
@@ -71,6 +72,7 @@ mainRouter.post(
   createCar
 );
 mainRouter.get("/api/cars", authenticate, getCars);
+mainRouter.get("/api/cars/count", authenticate, getCarsCount);
 mainRouter.get("/api/cars/:id", authenticate, getCarById);
 mainRouter.patch(
   "/api/cars/:id",
