@@ -198,3 +198,29 @@ exports.updateCar = catchAsync(async (req, res, next) => {
     car,
   });
 });
+
+exports.deleteCar = catchAsync(async (req, res, next) => {
+  let _id;
+
+  try {
+    _id = new ObjectId(req.params.id);
+  } catch (error) {
+    return next(
+      new AppError(responseCodes.INVALID_PARAM, "Car ID is invalid", 400)
+    );
+  }
+
+  const CarCollection = req.app.get("db").collection(collections.CARS);
+
+  // Delete Car from DB
+  await CarCollection.deleteOne({
+    _id,
+  });
+
+  res.status(200).json({
+    status: "success",
+    code: responseCodes.OK,
+    message: "Car deleted",
+    car_id: _id.toString(),
+  });
+});

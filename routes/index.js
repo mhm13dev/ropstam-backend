@@ -5,6 +5,7 @@ const {
   getCars,
   getCarById,
   updateCar,
+  deleteCar,
 } = require("../controllers/cars");
 const {
   createCategory,
@@ -77,6 +78,7 @@ mainRouter.patch(
   joiValidate(UpdateCarSchema, "body"),
   updateCar
 );
+mainRouter.delete("/api/cars/:id", authenticate, deleteCar);
 // Cars Routes End
 module.exports = {
   mainRouter,

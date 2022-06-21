@@ -166,7 +166,7 @@ exports.deleteCategory = catchAsync(async (req, res, next) => {
     .get("db")
     .collection(collections.CATEGORIES);
 
-  // Update Category name in DB
+  // Delete Category from DB
   await CategoryCollection.deleteOne({
     _id,
   });
