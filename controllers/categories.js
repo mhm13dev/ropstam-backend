@@ -34,3 +34,20 @@ exports.createCategory = catchAsync(async (req, res, next) => {
     category,
   });
 });
+
+exports.getCategories = catchAsync(async (req, res, next) => {
+  // Get Categories from DB
+  const CategoryCollection = req.app
+    .get("db")
+    .collection(collections.CATEGORIES);
+
+  const categoriesCursor = await CategoryCollection.find();
+  const categories = await categoriesCursor.toArray();
+
+  res.status(200).json({
+    status: "success",
+    code: responseCodes.OK,
+    message: "All Categories",
+    categories,
+  });
+});
