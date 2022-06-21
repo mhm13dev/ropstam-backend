@@ -1,6 +1,6 @@
 const Router = require("express").Router;
 const { signup, login, logout } = require("../controllers/auth");
-const { createCar } = require("../controllers/cars");
+const { createCar, getCars } = require("../controllers/cars");
 const {
   createCategory,
   getCategories,
@@ -64,6 +64,7 @@ mainRouter.post(
   joiValidate(NewCarSchema, "body"),
   createCar
 );
+mainRouter.get("/api/cars", authenticate, getCars);
 // Cars Routes End
 module.exports = {
   mainRouter,
