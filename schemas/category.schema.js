@@ -5,10 +5,10 @@ exports.CategorySchema = Joi.object().keys({
     .label("Category Name")
     .required()
     .trim()
-    .pattern(/^[a-z0-9_]*$/)
-    .lowercase()
+    .pattern(/^[A-Z0-9 ]*$/)
+    .uppercase()
     .messages({
       "string.pattern.base":
-        "{#label} should be alphanumeric text with underscores. e.g. cars_24",
+        '{#label} should be alphanumeric text with spaces. e.g. "Cars 24"',
     }),
 });
