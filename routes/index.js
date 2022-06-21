@@ -5,6 +5,7 @@ const {
   getCategories,
   getCategoryById,
   updateCategory,
+  deleteCategory,
 } = require("../controllers/categories");
 const { isLoggedIn, authenticate } = require("../middlewares/auth");
 const { CategorySchema } = require("../schemas/category.schema");
@@ -50,6 +51,7 @@ mainRouter.patch(
   joiValidate(CategorySchema, "body"),
   updateCategory
 );
+mainRouter.delete("/api/categories/:id", authenticate, deleteCategory);
 // Categories Routes End
 module.exports = {
   mainRouter,

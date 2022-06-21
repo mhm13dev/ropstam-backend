@@ -130,3 +130,31 @@ exports.updateCategory = catchAsync(async (req, res, next) => {
     category,
   });
 });
+
+exports.deleteCategory = catchAsync(async (req, res, next) => {
+  let _id;
+
+  try {
+    _id = new ObjectId(req.params.id);
+  } catch (error) {
+    return next(
+      new AppError(responseCodes.INVALID_PARAM, "Category ID is invalid", 400)
+    );
+  }
+
+  const CategoryCollection = req.app
+    .get("db")
+    .collection(collections.CATEGORIES);
+
+  // Update Category name in DB
+  await CategoryCollection.deleteOne({
+    _id,
+  });
+
+  res.status(200).json({
+    status: "success",
+    code: responseCodes.OK,
+    message: "Category deleted",
+    category_id: _id.toString(),
+  });
+});
