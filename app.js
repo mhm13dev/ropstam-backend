@@ -3,9 +3,9 @@ const xss = require("xss-clean");
 const helmet = require("helmet");
 const morgan = require("morgan");
 const cors = require("cors");
-const mainRouter = require("./routes").mainRouter;
-const AppError = require("./utils/app.error");
-const errorHandler = require("./middlewares/error.handler").errorHandler;
+const AppError = require("./utils/AppError");
+const { mainRouter } = require("./routes");
+const { errorHandler } = require("./middlewares/error.handler");
 
 exports.initializeApp = () => {
   const app = express();

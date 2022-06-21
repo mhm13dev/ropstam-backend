@@ -1,6 +1,6 @@
 require("dotenv").config();
-const initializeApp = require("./app").initializeApp;
-const connectToDBServer = require("./db/connection").connectToDBServer;
+const { connectToDBServer } = require("./db/connection");
+const { initializeApp } = require("./app");
 
 let server;
 
@@ -44,7 +44,7 @@ if (isNaN(Number(process.env.PORT))) {
 const PORT = Number(process.env.PORT);
 
 // Connect to Database Server
-connectToDBServer((err) => {
+connectToDBServer((err, db) => {
   if (err) {
     throw err;
   }
@@ -52,6 +52,8 @@ connectToDBServer((err) => {
 
   // Initialize express app after the database is connected
   const app = initializeApp();
+
+  app.set("db", db);
 
   // Start server to listen for request
   server = app.listen(PORT, () => {

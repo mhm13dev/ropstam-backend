@@ -1,4 +1,4 @@
-const AppError = require("../utils/app.error");
+const AppError = require("../utils/AppError");
 
 const sendErrorDev = (err, req, res) => {
   console.log(err);
@@ -33,6 +33,7 @@ const sendErrorProd = (err, req, res) => {
   return res.status(500).json(response);
 };
 
+// Handle MongoDB duplicate field error
 function handleDuplicateFieldsDB(err) {
   const keys = Object.keys(err.keyValue);
   const message = `${
@@ -41,6 +42,7 @@ function handleDuplicateFieldsDB(err) {
   return new AppError("duplicate_key", message, 403);
 }
 
+// Universal Error Handler For Express
 exports.errorHandler = function (err, req, res, next) {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "error";

@@ -1,4 +1,5 @@
 const { MongoClient } = require("mongodb");
+const { setupCollections } = require("./collections");
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -11,16 +12,15 @@ exports.connectToDBServer = function (callback) {
   // Connect client to Database
   client.connect(function (err, client) {
     if (err || !client) {
-      return callback(err);
+      return callback(err, null);
     }
 
     // Database Connection for interacting with Database Collections
     dbConnection = client.db(process.env.DB_NAME);
 
-    return callback();
-  });
-};
+    // Create and Setup Collections
+    setupCollections(dbConnection);
 
-exports.getDb = function () {
-  return dbConnection;
+    return callback(null, dbConnection);
+  });
 };
