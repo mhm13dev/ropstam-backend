@@ -11,6 +11,7 @@ const responseCodes = {
   DUPLICATE_KEY: "duplicate_key",
   INVALID_CREDENTIALS: "invalid_credentials",
   AUTHENTICATED: "authenticated",
+  LOGGED_OUT: "logged_out",
 };
 
 module.exports = responseCodes;

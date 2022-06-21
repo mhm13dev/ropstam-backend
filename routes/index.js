@@ -1,5 +1,5 @@
 const Router = require("express").Router;
-const { signup, login } = require("../controllers/auth");
+const { signup, login, logout } = require("../controllers/auth");
 const { isLoggedIn } = require("../middlewares/auth");
 const { SignupSchema, LoginSchema } = require("../schemas/user.schema");
 const { joiValidate } = require("../utils/joi.validate");
@@ -21,6 +21,9 @@ mainRouter.post(
   isLoggedIn,
   login
 );
+
+// Logout from User Account
+mainRouter.post("/api/logout", logout);
 
 module.exports = {
   mainRouter,
