@@ -6,6 +6,7 @@ const cors = require("cors");
 const AppError = require("./utils/AppError");
 const { mainRouter } = require("./routes");
 const { errorHandler } = require("./middlewares/error.handler");
+const responseCodes = require("./utils/response.codes");
 
 exports.initializeApp = () => {
   const app = express();
@@ -52,7 +53,7 @@ exports.initializeApp = () => {
   app.use((req, res, next) => {
     next(
       new AppError(
-        "url_not_found",
+        responseCodes.URL_NOT_FOUND,
         `The url ${req.originalUrl} does not exist!`,
         404
       )

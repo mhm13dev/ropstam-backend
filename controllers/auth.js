@@ -3,12 +3,17 @@ const { collections } = require("../db/collections");
 const AppError = require("../utils/AppError");
 const User = require("../models/User");
 const { sendSignupMail } = require("../utils/email");
+const responseCodes = require("../utils/response.codes");
 
 exports.signup = catchAsync(async (req, res, next) => {
   //   If a user is logged in, Don't allow them to signup
   if (req.currentUser) {
     return next(
-      new AppError("already_logged_in", "You are already logged in.", 403)
+      new AppError(
+        responseCodes.ALREADY_LOGGED_IN,
+        "You are already logged in.",
+        403
+      )
     );
   }
 
@@ -16,7 +21,11 @@ exports.signup = catchAsync(async (req, res, next) => {
   const joiError = req.joiError;
   if (req.joiError) {
     return next(
-      new AppError("invalid_req_body", joiError.details[0].message, 400)
+      new AppError(
+        responseCodes.INVALID_REQ_BODY,
+        joiError.details[0].message,
+        400
+      )
     );
   }
 
@@ -38,7 +47,7 @@ exports.signup = catchAsync(async (req, res, next) => {
 
   const response = {
     status: "success",
-    code: "ok",
+    code: responseCodes.OK,
     message: "An email has been sent to your inbox for confirmation",
     user: { ...user, password: undefined },
   };

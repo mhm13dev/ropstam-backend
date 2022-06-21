@@ -3,6 +3,7 @@ const { collections } = require("../db/collections");
 const { catchAsync } = require("../utils/catch.async");
 const AppError = require("../utils/AppError");
 const { ObjectId } = require("mongodb");
+const responseCodes = require("../utils/response.codes");
 
 const authenticate = catchAsync(async (req, res, next) => {
   // 1) Get & Check if there is auth token in the header
@@ -18,7 +19,7 @@ const authenticate = catchAsync(async (req, res, next) => {
   if (!token || token === "logged_out") {
     return next(
       new AppError(
-        "unauthenticated",
+        responseCodes.UNAUTHENTICATED,
         "You are not logged in. Please Log in to get access",
         401
       )
@@ -30,7 +31,9 @@ const authenticate = catchAsync(async (req, res, next) => {
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET);
   } catch (err) {
-    return next(new AppError("jwt_error", "Please login to get access", 401));
+    return next(
+      new AppError(responseCodes.JWT_ERROR, "Please login to get access", 401)
+    );
   }
 
   // 3) Check if user still exists
@@ -40,7 +43,9 @@ const authenticate = catchAsync(async (req, res, next) => {
   });
 
   if (!currentUser) {
-    return next(new AppError("user_not_found", "User does not exist", 404));
+    return next(
+      new AppError(responseCodes.USER_NOT_FOUND, "User does not exist", 404)
+    );
   }
 
   // 4) Grant Access To Protected Route

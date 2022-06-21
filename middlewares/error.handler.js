@@ -1,4 +1,5 @@
 const AppError = require("../utils/AppError");
+const responseCodes = require("../utils/response.codes");
 
 const sendErrorDev = (err, req, res) => {
   console.log(err);
@@ -27,7 +28,7 @@ const sendErrorProd = (err, req, res) => {
   // 2) Send generic message
   const response = {
     status: "error",
-    code: "server_error",
+    code: responseCodes.SERVER_ERROR,
     message: "Something went very wrong!",
   };
   return res.status(500).json(response);
@@ -39,7 +40,7 @@ function handleDuplicateFieldsDB(err) {
   const message = `${
     keys[0][0].toUpperCase() + keys[0].slice(1)
   } is already used`;
-  return new AppError("duplicate_key", message, 403);
+  return new AppError(responseCodes.DUPLICATE_KEY, message, 403);
 }
 
 // Universal Error Handler For Express
