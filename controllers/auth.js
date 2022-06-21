@@ -48,9 +48,73 @@ exports.signup = catchAsync(async (req, res, next) => {
   const response = {
     status: "success",
     code: responseCodes.OK,
-    message: "An email has been sent to your inbox for confirmation",
+    message: "An email has been sent to your inbox with credentials",
     user: { ...user, password: undefined },
   };
 
   return res.status(201).json(response);
+});
+
+exports.login = catchAsync(async (req, res, next) => {
+  if (req.currentUser) {
+    return next(
+      new AppError(
+        responseCodes.ALREADY_LOGGED_IN,
+        "You are already logged in.",
+        403
+      )
+    );
+  }
+
+  const joiError = req.joiError;
+  if (req.joiError) {
+    return next(
+      new AppError(
+        responseCodes.INVALID_REQ_BODY,
+        joiError.details[0].message,
+        400
+      )
+    );
+  }
+
+  const data = req.joiValue;
+
+  // Get user from database
+  const UserCollection = req.app.get("db").collection(collections.USERS);
+  const user = await UserCollection.findOne({
+    email: data.email,
+  });
+
+  if (!user) {
+    return next(
+      new AppError(responseCodes.INVALID_CREDENTIALS, "User doesn't exist", 401)
+    );
+  }
+
+  // Check if password is incorrect
+  if (!(await User.comparePassword(data.password, user.password))) {
+    return next(
+      new AppError(
+        responseCodes.INVALID_CREDENTIALS,
+        "Password is incorrect",
+        401
+      )
+    );
+  }
+
+  // Create JWT for User
+  const jwt = User.signJWT(user._id);
+
+  const response = {
+    status: "success",
+    code: responseCodes.AUTHENTICATED,
+    message: "Login successful",
+    user: {
+      ...user,
+      password: undefined,
+    },
+    jwt,
+  };
+
+  return res.status(200).json(response);
 });

@@ -1,5 +1,6 @@
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const { ObjectId } = require("mongodb");
 
 // User class for constructing new user object
@@ -13,12 +14,22 @@ class User {
     this.updatedAt = creationDate;
   }
 
+  hashPassword(password) {
+    return bcrypt.hashSync(password, 12);
+  }
+
   static generatePassword() {
     return crypto.randomBytes(16).toString("hex");
   }
 
-  hashPassword(password) {
-    return bcrypt.hashSync(password, 12);
+  static async comparePassword(password, hash) {
+    return await bcrypt.compare(password, hash);
+  }
+
+  static signJWT(userId) {
+    return jwt.sign({ sub: userId.toString() }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_EXPIRES_IN_DAYS + "d",
+    });
   }
 }
 

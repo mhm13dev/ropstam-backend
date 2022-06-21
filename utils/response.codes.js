@@ -9,6 +9,8 @@ const responseCodes = {
   JWT_ERROR: "jwt_error",
   USER_NOT_FOUND: "user_not_found",
   DUPLICATE_KEY: "duplicate_key",
+  INVALID_CREDENTIALS: "invalid_credentials",
+  AUTHENTICATED: "authenticated",
 };
 
 module.exports = responseCodes;
