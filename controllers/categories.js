@@ -80,3 +80,53 @@ exports.getCategoryById = catchAsync(async (req, res, next) => {
     category,
   });
 });
+
+exports.updateCategory = catchAsync(async (req, res, next) => {
+  const joiError = req.joiError;
+  if (req.joiError) {
+    return next(
+      new AppError(
+        responseCodes.INVALID_REQ_BODY,
+        joiError.details[0].message,
+        400
+      )
+    );
+  }
+
+  let _id;
+
+  try {
+    _id = new ObjectId(req.params.id);
+  } catch (error) {
+    return next(
+      new AppError(responseCodes.INVALID_PARAM, "Category ID is invalid", 400)
+    );
+  }
+
+  const data = req.joiValue;
+
+  const CategoryCollection = req.app
+    .get("db")
+    .collection(collections.CATEGORIES);
+
+  // Update Category name in DB
+  const { value: category } = await CategoryCollection.findOneAndUpdate(
+    {
+      _id,
+    },
+    {
+      $set: {
+        name: data.name,
+        updatedAt: new Date(),
+      },
+    },
+    { returnDocument: "after" }
+  );
+
+  res.status(200).json({
+    status: "success",
+    code: responseCodes.OK,
+    message: "Category updated",
+    category,
+  });
+});

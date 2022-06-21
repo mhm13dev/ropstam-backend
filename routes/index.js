@@ -4,9 +4,10 @@ const {
   createCategory,
   getCategories,
   getCategoryById,
+  updateCategory,
 } = require("../controllers/categories");
 const { isLoggedIn, authenticate } = require("../middlewares/auth");
-const { NewCategorySchema } = require("../schemas/category.schema");
+const { CategorySchema } = require("../schemas/category.schema");
 const { SignupSchema, LoginSchema } = require("../schemas/user.schema");
 const { joiValidate } = require("../utils/joi.validate");
 
@@ -38,11 +39,17 @@ mainRouter.post("/api/logout", logout);
 mainRouter.post(
   "/api/categories",
   authenticate,
-  joiValidate(NewCategorySchema, "body"),
+  joiValidate(CategorySchema, "body"),
   createCategory
 );
 mainRouter.get("/api/categories", authenticate, getCategories);
 mainRouter.get("/api/categories/:id", authenticate, getCategoryById);
+mainRouter.patch(
+  "/api/categories/:id",
+  authenticate,
+  joiValidate(CategorySchema, "body"),
+  updateCategory
+);
 // Categories Routes End
 module.exports = {
   mainRouter,
