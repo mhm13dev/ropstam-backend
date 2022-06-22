@@ -1,4 +1,4 @@
-# Ropstam Solutions Task
+# Ropstam Solutions Task - Backend
 
 This repository contains the backend code for the given task.
 
@@ -52,3 +52,21 @@ This repository contains the backend code for the given task.
 `/api/cars/:id` - `PATCH`
 
 `/api/cars/:id` - `DELETE`
+
+### Backend Checklist
+
+- [x] Setup a project having APIs & frontend separately.
+
+- [x] Signup / Login, Authentication
+
+- [x] After sign-up the system should send a welcome email to the user along with a randomly generated password to login on the system later on. You can use any preferred method for sending emails.
+
+- [x] On the front-end there should be a sign-in & sign-up page.
+
+- [x] CRUD API for Cars
+
+- [x] CRUD API for Categories
+
+- [x] Your system should be protected XSS & should have implemented JWT.
+
+- [x] Each create & update module must have both front-end & back-end data validation.
