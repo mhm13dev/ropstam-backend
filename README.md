@@ -9,6 +9,12 @@ This repository contains the backend code for the given task.
 - `npm install`
 - `npm run dev` or `npm run start`
 
+### Important Links
+
+✨ [Frontend Repository](https://github.com/mhm13dev/ropstam-frontend)
+
+✨ [Postman Workspace](https://www.postman.com/dark-sunset-507082/workspace/ropstam-solutions)
+
 ### API Endpoints
 
 #### Test Endpoint
